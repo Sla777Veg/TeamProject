@@ -28,5 +28,5 @@ Those who decide to adopt a dog have to send the bot daily reports describing th
 - PostgreSQL
 - Liquibase
 
-## Демонстрация работы бота:
+## The demonstration of the Telegram bot:
 [Ссылка на обзор бота]()
