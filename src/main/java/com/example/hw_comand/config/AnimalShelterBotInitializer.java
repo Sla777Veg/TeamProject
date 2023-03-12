@@ -23,7 +23,7 @@ public class AnimalShelterBotInitializer {
         try {
             telegramBotsApi.registerBot(bot);
         } catch (TelegramApiException e) {
-            log.error("Произошла ошибка: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
