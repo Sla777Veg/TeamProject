@@ -10,6 +10,8 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import static java.rmi.server.LogStream.log;
+
 @Component
 @Slf4j
 public class AnimalShelterBotInitializer {
@@ -23,7 +25,7 @@ public class AnimalShelterBotInitializer {
         try {
             telegramBotsApi.registerBot(bot);
         } catch (TelegramApiException e) {
-            log.error("Произошла ошибка: " + e.getMessage());
+            log("Произошла ошибка: " + e.getMessage());
         }
     }
 }
