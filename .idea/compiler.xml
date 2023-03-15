@@ -7,7 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TeamProject" />
+        <module name="HW_Comand" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -17,6 +17,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="HW_Comand" options="-parameters" />
       <module name="TeamProject" options="-parameters" />
     </option>
   </component>
