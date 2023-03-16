@@ -17,6 +17,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="HW_Comand" options="-parameters" />
       <module name="TeamProject" options="-parameters" />
     </option>
   </component>
