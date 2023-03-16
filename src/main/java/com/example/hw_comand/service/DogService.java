@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import com.example.hw_comand.exceptions.DogNotFoundException;
 
 import java.util.Collection;
-
+/**
+ * Class of DogService
+ * @author Kravchuk Vyacheslav
+ */
 @Service
 public class DogService {
 
