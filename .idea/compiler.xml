@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="TeamProject" />
+        <module name="HW_Comand" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
