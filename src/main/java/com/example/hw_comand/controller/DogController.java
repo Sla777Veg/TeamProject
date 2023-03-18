@@ -6,7 +6,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-
+/**
+ * Class of DogController
+ * @author Kravchuk Vyacheslav
+ */
 @RestController
 @RequestMapping("dog")
 public class DogController {

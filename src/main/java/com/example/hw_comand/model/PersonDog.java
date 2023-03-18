@@ -36,18 +36,18 @@ public class PersonDog {
     /** "id Chat" field */
     private Long chatId;
 
-//    private Status status;
+    private Status status;
 
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_id")
     private Dog dog;
-//
-//    @OneToOne(orphanRemoval = true)
-//    @JoinTable(name = "person_report_data",
-//            joinColumns = @JoinColumn(name = "person_null"),
-//            inverseJoinColumns = @JoinColumn(name = "report_data_id"))
-//    private ReportData reportData;
+
+    @OneToOne(orphanRemoval = true)
+    @JoinTable(name = "person_report_data",
+            joinColumns = @JoinColumn(name = "person_null"),
+            inverseJoinColumns = @JoinColumn(name = "report_data_id"))
+    private ReportData reportData;
 
     /**
      * Constructor - creating a new object.
@@ -97,13 +97,13 @@ public class PersonDog {
         this.id = id;
     }
 
-//    public Status getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(Status status) {
-//        this.status = status;
-//    }
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;
@@ -149,13 +149,13 @@ public class PersonDog {
         return chatId;
     }
 
-//    public ReportData getReportData() {
-//        return reportData;
-//    }
-//
-//    public void setReportData(ReportData reportData) {
-//        this.reportData = reportData;
-//    }
+    public ReportData getReportData() {
+        return reportData;
+    }
+
+    public void setReportData(ReportData reportData) {
+        this.reportData = reportData;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -180,9 +180,9 @@ public class PersonDog {
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +
                 ", chatId=" + chatId +
-//                ", status=" + status +
+                ", status=" + status +
                 ", dog=" + dog +
-//                ", reportData=" + reportData +
+                ", reportData=" + reportData +
                 '}';
     }
 }
