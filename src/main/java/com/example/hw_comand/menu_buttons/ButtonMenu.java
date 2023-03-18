@@ -4,7 +4,10 @@ import com.example.hw_comand.listener.BotUpdatesListener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.KeyboardButton;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,10 +105,11 @@ public class ButtonMenu {
     private void sendMessage(Long chatId, String textToSend, InlineKeyboardMarkup keyboardMarkup){
         SendMessage message = new SendMessage(chatId, textToSend);
         message.replyMarkup(keyboardMarkup);
-        try {
-            telegramBot.execute(message);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+        SendResponse response = telegramBot.execute(message);
+        if (!response.isOk()) {
+            logger.error("Error during sending message: {}", response.description());
         }
     }
+
+
 }
