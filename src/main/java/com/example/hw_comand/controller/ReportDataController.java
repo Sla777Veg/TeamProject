@@ -16,7 +16,7 @@ import java.util.Collection;
 
 /**
  * Class of ReportDataController.
- * @author Artem Alekseev
+ * @author Obukhov Damir
  * @version 1.0.0
  */
 @RestController
