@@ -7,8 +7,6 @@ import com.example.hw_comand.model.PersonDog;
 import com.example.hw_comand.model.ReportData;
 import com.example.hw_comand.repository.PersonCatRepository;
 import com.example.hw_comand.repository.PersonDogRepository;
-import com.example.hw_comand.repository.ReportDataRepository;
-import com.example.hw_comand.service.ReportDataService;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.CallbackQuery;
