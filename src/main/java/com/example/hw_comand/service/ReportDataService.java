@@ -3,6 +3,7 @@ package com.example.hw_comand.service;
 
 
 
+import com.example.hw_comand.model.ReportData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -93,10 +94,11 @@ public class ReportDataService {
 
     /**
      * Method to get a report by id.
+     *
      * @param id
      * @return {@link ReportDataRepository#findById(Object)}
+     * @throws PersonCatNotFoundException
      * @see ReportDataService
-     * @exception PersonCatNotFoundException
      */
     public ReportData findById(Long id) {
         logger.info("Was invoked method to get a report by id={}", id);
