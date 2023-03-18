@@ -1,8 +1,5 @@
 package com.example.hw_comand.controller;
 
-
-import com.example.hw_comand.listener.BotUpdatesListener;
-import com.example.hw_comand.model.ReportData;
 import com.example.hw_comand.service.ReportDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import com.example.hw_comand.model.ReportData;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,7 +28,7 @@ public class ReportDataController {
 
     private final ReportDataService reportDataService;
     @Autowired
-    private BotUpdatesListener telegramBotUpdatesListener;
+    private com.example.hw_comand.controller.botUpdatesListener botUpdatesListener;
 
     private final String fileType = "image/jpeg";
 
@@ -128,6 +126,6 @@ public class ReportDataController {
                                     @RequestParam Long chat_Id,
                                     @Parameter(description = "Ваше сообщение")
                                     @RequestParam String message) {
-        this.telegramBotUpdatesListener.sendMessage(chat_Id, message);
+        this.botUpdatesListener.sendMessage(chat_Id, message);
     }
 }

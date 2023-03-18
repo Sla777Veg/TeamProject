@@ -52,4 +52,7 @@ public class BotUpdatesListener implements UpdatesListener {
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
+
+    public void sendMessage(Long chatId, String message) {
+    }
 }

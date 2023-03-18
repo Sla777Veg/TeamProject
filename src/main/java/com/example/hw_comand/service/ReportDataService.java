@@ -1,14 +1,15 @@
+
 package com.example.hw_comand.service;
 
-
-
-
+import com.example.hw_comand.exceptions.PersonCatNotFoundException;
 import com.example.hw_comand.model.ReportData;
+import com.example.hw_comand.repository.ReportDataRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.pengrad.telegrambot.model.File;
+
 
 import javax.transaction.Transactional;
 import java.io.*;
@@ -16,7 +17,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * Class of ReportDataService.
+ * @author Obukhov Damir
+ * @version 1.0.0
+ */
 @Service
 @Transactional
 public class ReportDataService {
@@ -94,17 +99,16 @@ public class ReportDataService {
 
     /**
      * Method to get a report by id.
-     *
      * @param id
      * @return {@link ReportDataRepository#findById(Object)}
-     * @throws PersonCatNotFoundException
      * @see ReportDataService
+     * @exception PersonCatNotFoundException
      */
     public ReportData findById(Long id) {
         logger.info("Was invoked method to get a report by id={}", id);
 
         return this.reportRepository.findById(id)
-                .orElseThrow(ReportDataNotFoundException::new);
+                .orElseThrow(reportRepository::new);
     }
 
     /**
