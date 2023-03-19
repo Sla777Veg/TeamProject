@@ -2,6 +2,7 @@
 package com.example.hw_comand.service;
 
 import com.example.hw_comand.exceptions.PersonCatNotFoundException;
+import com.example.hw_comand.exceptions.ReportDataNotFoundException;
 import com.example.hw_comand.model.ReportData;
 import com.example.hw_comand.repository.ReportDataRepository;
 import org.slf4j.Logger;
@@ -108,7 +109,7 @@ public class ReportDataService {
         logger.info("Was invoked method to get a report by id={}", id);
 
         return this.reportRepository.findById(id)
-                .orElseThrow(reportRepository::new);
+                .orElseThrow(ReportDataNotFoundException::new);
     }
 
     /**
