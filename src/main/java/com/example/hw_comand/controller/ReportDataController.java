@@ -1,5 +1,6 @@
 package com.example.hw_comand.controller;
 
+import com.example.hw_comand.listener.BotUpdatesListener;
 import com.example.hw_comand.service.ReportDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +29,7 @@ public class ReportDataController {
 
     private final ReportDataService reportDataService;
     @Autowired
-    private com.example.hw_comand.controller.botUpdatesListener botUpdatesListener;
+    private BotUpdatesListener botUpdatesListener;
 
     private final String fileType = "image/jpeg";
 
