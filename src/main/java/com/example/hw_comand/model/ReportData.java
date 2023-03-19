@@ -52,8 +52,8 @@ public class ReportData {
     /** "LastMessage" field */
     private Date lastMessage;
 
-    /** "LastMessageMs" field */
-    private Long lastMessageMs;
+    /** "LastMessages" field */
+    private Long lastMessages;
 
     /**
      * Constructor - creating a new object.
@@ -101,12 +101,12 @@ public class ReportData {
         this.habits = habits;
     }
 
-    public Long getLastMessageMs() {
-        return lastMessageMs;
+    public Long getLastMessages() {
+        return lastMessages;
     }
 
-    public void setLastMessageMs(Long lastMessageMs) {
-        this.lastMessageMs = lastMessageMs;
+    public void setLastMessages(Long lastMessages) {
+        this.lastMessages = lastMessages;
     }
 
     public Date getLastMessage() {
@@ -215,7 +215,10 @@ public class ReportData {
                 ", data=" + Arrays.toString(data) +
                 ", caption='" + caption + '\'' +
                 ", lastMessage=" + lastMessage +
-                ", lastMessageMs=" + lastMessageMs +
+                ", lastMessageMs=" + lastMessages +
                 '}';
+    }
+
+    public void setLastMessageMs(Long timeDate) {
     }
 }
