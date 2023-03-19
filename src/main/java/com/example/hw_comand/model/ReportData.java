@@ -218,4 +218,7 @@ public class ReportData {
                 ", lastMessageMs=" + lastMessages +
                 '}';
     }
+
+    public void setLastMessageMs(Long timeDate) {
+    }
 }
