@@ -110,4 +110,19 @@ class CatControllerTest {
         verify(catService).update(cat);
     }
 
+    /**
+     * Test for remove method in CatController
+     * @throws Exception
+     */
+
+    @Test
+    void remove() throws Exception {
+        mockMvc.perform(
+                        delete("/cat/{id}", 1))
+                .andExpect(status().isOk());
+        verify(catService).removeById(1L);
+    }
+
+
+
 }
