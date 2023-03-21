@@ -1,5 +1,6 @@
 package com.example.hw_comand.service;
 
+import com.example.hw_comand.exceptions.CatNotFoundException;
 import com.example.hw_comand.model.Cat;
 import com.example.hw_comand.repository.CatRepository;
 import org.assertj.core.api.Assertions;
@@ -14,6 +15,13 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 
+/**
+ * Class for testing CatService
+ *
+ * @author Dmitriy Kuzeev
+ * @see CatService
+ * @see CatRepository
+ */
 @ExtendWith(MockitoExtension.class)
 public class CatServiceTest {
 
@@ -46,5 +54,18 @@ public class CatServiceTest {
         Assertions.assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
         Assertions.assertThat(actual.getYearOfBirth()).isEqualTo(expected.getYearOfBirth());
     }
+
+    /**
+     * Test for throwing an exception in method <b>getById()</b> in CatService
+     * <br>
+     * Mockito: when <b>CatRepository::findById()</b> method called, throws <b>CatNotFoundException</b>
+     */
+
+    @Test
+    public void getByIdExceptionTest() {
+        Mockito.when(catRepositoryMock.findById(any(Long.class))).thenThrow(CatNotFoundException.class);
+        org.junit.jupiter.api.Assertions.assertThrows(CatNotFoundException.class, () -> catService.getById(1L));
+    }
+
 
 }
