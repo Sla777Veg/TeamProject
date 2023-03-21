@@ -23,7 +23,7 @@ public class Cat {
 
     private String name;
 
-    private String yearOfBirth;
+    private int yearOfBirth;
 
     private String description;
 
@@ -60,11 +60,11 @@ public class Cat {
         this.name = name;
     }
 
-    public String getYearOfBirth() {
+    public int getYearOfBirth() {
         return yearOfBirth;
     }
 
-    public void setYearOfBirth(String yearOfBirth) {
+    public void setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
     }
 
