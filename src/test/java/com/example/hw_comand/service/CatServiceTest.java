@@ -11,6 +11,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -131,6 +134,30 @@ public class CatServiceTest {
         org.junit.jupiter.api.Assertions.assertThrows(CatNotFoundException.class, () -> catService.update(expected));
     }
 
+    /**
+     * Test for method <b>getAll()</b> in CatService
+     * <br>
+     * Mockito: when <b>CatRepository::findAll()</b> method called, returns <b>expected</b> collection
+     */
 
+    @Test
+    public void getAllTest() {
+
+        List<Cat> expected = new ArrayList<>();
+
+        Cat testCat1 = new Cat();
+        testCat1.setName("testName1");
+        testCat1.setDescription("testDesc1");
+        testCat1.setBreed("testBreed1");
+        testCat1.setYearOfBirth(2021);
+        expected.add(testCat1);
+
+        Mockito.when(catRepositoryMock.findAll()).thenReturn(expected);
+
+        Collection<Cat> actual = catService.getAll();
+
+        Assertions.assertThat(actual.size()).isEqualTo(expected.size());
+        Assertions.assertThat(actual).isEqualTo(expected);
+    }
 
 }
