@@ -91,6 +91,34 @@ public class CatServiceTest {
         Assertions.assertThat(actual.getYearOfBirth()).isEqualTo(expected.getYearOfBirth());
     }
 
+    /**
+     * Test for method <b>update()</b> in CatService
+     * <br>
+     * Mockito: when <b>CatRepository::save()</b> method called, returns <b>expected</b> object
+     * <br>
+     * Mockito: when <b>CatRepository::findById()</b> method called, returns <b>expected</b> object
+     */
+
+    @Test
+    public void updateTest() {
+        Cat expected = new Cat();
+        expected.setName("testName");
+        expected.setDescription("testDesc");
+        expected.setBreed("testBreed");
+        expected.setYearOfBirth(2021);
+        expected.setId(1L);
+
+        Mockito.when(catRepositoryMock.findById(any(Long.class))).thenReturn(Optional.of(expected));
+        Mockito.when(catRepositoryMock.save(any(Cat.class))).thenReturn(expected);
+
+        Cat actual = catService.update(expected);
+
+        Assertions.assertThat(actual.getName()).isEqualTo(expected.getName());
+        Assertions.assertThat(actual.getBreed()).isEqualTo(expected.getBreed());
+        Assertions.assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
+        Assertions.assertThat(actual.getYearOfBirth()).isEqualTo(expected.getYearOfBirth());
+    }
+
 
 
 }
