@@ -2,18 +2,20 @@ package com.example.hw_comand.controller;
 
 import com.example.hw_comand.model.Cat;
 import com.example.hw_comand.service.CatService;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Class for testing CatController
@@ -47,6 +49,35 @@ class CatControllerTest {
                 .andExpect(jsonPath("$.id").value(1));
 
         verify(catService).getById(1L);
+    }
+
+
+    /**
+     * Test for save metod in CatController
+     * <br>
+     *  Mockito: when <b>CatService::create()</b> method called, returns <b>cat</b> object
+     * @throws Exception
+     */
+
+    @Test
+    void save() throws Exception {
+        Cat cat = new Cat();
+        cat.setId(1L);
+        cat.setName("cat");
+        JSONObject userObject = new JSONObject();
+        userObject.put("id", 1L);
+        userObject.put("name", "cat");
+
+        when(catService.create(cat)).thenReturn(cat);
+
+        mockMvc.perform(
+                        post("/cat")
+                                .content(userObject.toString())
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(userObject.toString()));
+
+        verify(catService).create(cat);
     }
 
 }
