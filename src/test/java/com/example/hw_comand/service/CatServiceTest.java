@@ -119,6 +119,18 @@ public class CatServiceTest {
         Assertions.assertThat(actual.getYearOfBirth()).isEqualTo(expected.getYearOfBirth());
     }
 
+    /**
+     * Test for throwing an exception in method <b>update()</b> in CatService
+     * <br>
+     * Creating a <b>Cat</b> object with null id
+     */
+
+    @Test
+    public void updateExceptionTest() {
+        Cat expected = new Cat();
+        org.junit.jupiter.api.Assertions.assertThrows(CatNotFoundException.class, () -> catService.update(expected));
+    }
+
 
 
 }
