@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -86,6 +88,7 @@ class CatControllerTest {
      * Test for update method in CatController
      * <br>
      * Mockito: when <b>CatService::update()</b> method called, returns <b>cat</b> object
+     *
      * @throws Exception
      */
 
@@ -112,6 +115,7 @@ class CatControllerTest {
 
     /**
      * Test for remove method in CatController
+     *
      * @throws Exception
      */
 
@@ -123,6 +127,17 @@ class CatControllerTest {
         verify(catService).removeById(1L);
     }
 
+    /**
+     * Test for getAll method in CatController
+     * @throws Exception
+     */
 
+    @Test
+    void getAll() throws Exception {
+        when(catService.getAll()).thenReturn(List.of(new Cat()));
+        mockMvc.perform(
+                        get("/cat/all"))
+                .andExpect(status().isOk());
+    }
 
 }
