@@ -76,7 +76,7 @@ public class CatController {
     }
 
     @Operation(summary = "Просмотр всех Cat")
-    @GetMapping("All")
+    @GetMapping("/all")
     public Collection<Cat> getAll() {
         return this.service.getAll();
     }

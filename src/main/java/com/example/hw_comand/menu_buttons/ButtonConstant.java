@@ -17,6 +17,7 @@ public enum ButtonConstant {
     CALL_VOLUNTEER("CALL_VOLUNTEER", "Позвать волонтёра"),
     ABOUT_SHELTER("ABOUT_SHELTER", "Подробнее о приюте"),
     SCHEDULE_ADDRESS_ROUTE("SCHEDULE_ADDRESS_ROUTE", "Расписание, адрес, маршрут"),
+    PASS_REGISTRATION("PASS_REGISTRATION", "Оформление пропуска"),
     SAFETY_RULES("SAFETY_RULES", "Техника безопасности"),
     CALLBACK("CALLBACK", "Оставить контакты для связи");
 

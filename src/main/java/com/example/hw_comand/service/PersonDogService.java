@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Class of PersonDogService.
@@ -91,13 +92,13 @@ public class PersonDogService {
     }
 
     /**
-     * Method to remove a personsDog by chatId.
+     * Method to get a personsDog by chatId.
      * @param chatId
      * @return {@link PersonDogRepository#findByChatId(Long)}
      * @see PersonDogService
      */
-    public Collection<PersonDog> getByChatId(Long chatId) {
-        logger.info("Was invoked method to remove a personsDog by chatId={}", chatId);
+    public Optional<PersonDog> getByChatId(Long chatId) {
+        logger.info("Was invoked method to get a personsDog by chatId={}", chatId);
 
         return this.repository.findByChatId(chatId);
     }

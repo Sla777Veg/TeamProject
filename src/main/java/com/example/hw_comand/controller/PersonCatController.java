@@ -7,6 +7,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Optional;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 @RestController
 @RequestMapping("person-cat")
@@ -46,7 +50,10 @@ public class PersonCatController {
     @GetMapping("/all")
     public Collection<PersonCat> getAll(@RequestParam(required = false) Long chatId) {
         if (chatId != null) {
-            return this.service.getByChatId(chatId);
+            Optional<PersonCat> catPerson =  this.service.getByChatId(chatId);
+            if (catPerson.isPresent()) {
+                return singletonList(catPerson.get());
+            } return emptyList();
         }
         return this.service.getAll();
     }

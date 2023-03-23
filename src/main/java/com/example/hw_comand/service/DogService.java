@@ -76,7 +76,7 @@ public class DogService {
     }
 
     /**
-     * Method to remove a cat by id.
+     * Method to remove a dog by id.
      * @param id
      */
     public void removeById(Long id) {

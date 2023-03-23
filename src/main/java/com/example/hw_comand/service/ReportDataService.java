@@ -1,7 +1,6 @@
 
 package com.example.hw_comand.service;
 
-import com.example.hw_comand.exceptions.PersonCatNotFoundException;
 import com.example.hw_comand.exceptions.ReportDataNotFoundException;
 import com.example.hw_comand.model.ReportData;
 import com.example.hw_comand.repository.ReportDataRepository;
@@ -9,14 +8,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import com.pengrad.telegrambot.model.File;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import javax.transaction.Transactional;
-import java.io.*;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.Optional;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 /**
  * Class of ReportDataService.
@@ -27,6 +28,7 @@ import java.util.List;
 @Transactional
 public class ReportDataService {
 
+
     private final ReportDataRepository reportRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(ReportDataService.class);
@@ -36,65 +38,28 @@ public class ReportDataService {
     }
 
     /**
-     * Method to uploadReportData.
+     * Method to upload ReportData.
      * @param personId
      * @param pictureFile
-     * @param file
-     * @param ration
-     * @param health
-     * @param habits
      * @param filePath
+     * @param description
      * @param dateSendMessage
-     * @param timeDate
-     * @param daysOfReports
      * @throws IOException
      * @see ReportDataService
      */
-    public void uploadReportData(Long personId, byte[] pictureFile, File file, String ration, String health,
-                                 String habits, String filePath, Date dateSendMessage, Long timeDate, long daysOfReports) throws IOException {
+    public void uploadReportData(Long personId, byte[] pictureFile, Path filePath, String description, Date dateSendMessage) throws IOException {
         logger.info("Was invoked method to uploadReportData");
 
         ReportData report = new ReportData();
 
+        Optional<ReportData> lastReport = reportRepository.findFirstByChatIdOrderByLastMessageDesc(personId);
+
+        report.setReportDays(lastReport.map(rep -> rep.getReportDays()+1).orElse(1L));
         report.setLastMessage(dateSendMessage);
-        report.setDays(daysOfReports);
-        report.setFilePath(filePath);
-        report.setFileSize(file.fileSize());
-        report.setLastMessageMs(timeDate);
+        report.setFilePath(filePath.toString());
         report.setChatId(personId);
         report.setData(pictureFile);
-        report.setRation(ration);
-        report.setHealth(health);
-        report.setHabits(habits);
-        this.reportRepository.save(report);
-    }
-
-    /**
-     * Method to uploadReportData.
-     * @param personId
-     * @param pictureFile
-     * @param file
-     * @param caption
-     * @param filePath
-     * @param dateSendMessage
-     * @param timeDate
-     * @param daysOfReports
-     * @throws IOException
-     * @see ReportDataService
-     */
-    public void uploadReportData(Long personId, byte[] pictureFile, File file,
-                                 String caption, String filePath, Date dateSendMessage, Long timeDate, long daysOfReports) throws IOException {
-        logger.info("Was invoked method to uploadReportData");
-
-        ReportData report = new ReportData();//findById(personId);
-        report.setLastMessage(dateSendMessage);
-        report.setDays(daysOfReports);
-        report.setFilePath(filePath);
-        report.setChatId(personId);
-        report.setFileSize(file.fileSize());
-        report.setData(pictureFile);
-        report.setCaption(caption);
-        report.setLastMessageMs(timeDate);
+        report.setDescription(description);
         this.reportRepository.save(report);
     }
 
@@ -103,7 +68,7 @@ public class ReportDataService {
      * @param id
      * @return {@link ReportDataRepository#findById(Object)}
      * @see ReportDataService
-     * @exception PersonCatNotFoundException
+     * @exception ReportDataNotFoundException
      */
     public ReportData findById(Long id) {
         logger.info("Was invoked method to get a report by id={}", id);
@@ -118,21 +83,28 @@ public class ReportDataService {
      * @return {@link ReportDataRepository#findByChatId(Long)}
      * @see ReportDataService
      */
-    public ReportData findByChatId(Long chatId) {
+    public Optional<ReportData> findByChatId(Long chatId) {
         logger.info("Was invoked method to get a report by chatId={}", chatId);
 
         return this.reportRepository.findByChatId(chatId);
     }
 
     /**
-     * Method to findListByChatId a report by id.
+     * Method to findListByChatId a report by chat id.
      * @param chatId
      * @return {@link ReportDataRepository#findListByChatId(Long)}
      * @see ReportDataService
      */
     public Collection<ReportData> findListByChatId(Long chatId) {
-        logger.info("Was invoked method to findListByChatId a report by id={}", chatId);
+        logger.info("Was invoked method to findListByChatId a report by chatId={}", chatId);
 
+        if (chatId != null) {
+            Optional<ReportData> reportData = reportRepository.findByChatId(chatId);
+            if (reportData.isPresent()) {
+                return singletonList(reportData.get());
+            }
+            return emptyList();
+        }
         return this.reportRepository.findListByChatId(chatId);
     }
 
@@ -164,7 +136,7 @@ public class ReportDataService {
      * @return {@link ReportDataRepository#findAll()}
      * @see ReportDataService
      */
-    public List<ReportData> getAll() {
+    public Collection<ReportData> getAll() {
         logger.info("Was invoked method to get all reports");
 
         return this.reportRepository.findAll();
@@ -177,7 +149,7 @@ public class ReportDataService {
      * @return {@link ReportDataRepository#findAll()}
      * @see ReportDataService
      */
-    public List<ReportData> getAllReports(Integer pageNumber, Integer pageSize) {
+    public Collection<ReportData> getAllReports(Integer pageNumber, Integer pageSize) {
         logger.info("Was invoked method to get all reports");
 
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
@@ -190,7 +162,7 @@ public class ReportDataService {
      * @see ReportDataService
      */
     private String getExtensions(String fileName) {
-        logger.info("Was invoked method to getExtensions");
+        logger.info("Was invoked method to get Extensions");
 
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }

@@ -1,9 +1,7 @@
 package com.example.hw_comand.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 /**
@@ -13,18 +11,24 @@ import java.util.Objects;
  * @version 1.0.0
  */
 @Entity
+@Table(name = "cat")
 public class Cat {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cat_id")
     private Long id;
 
+    @Column(name = "breed")
     private String breed;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "year_of_birth")
     private int yearOfBirth;
 
+    @Column(name = "description")
     private String description;
 
     /**
@@ -76,13 +80,13 @@ public class Cat {
         this.description = description;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cat cat = (Cat) o;
-        return id == cat.id && yearOfBirth == cat.yearOfBirth &&
-                Objects.equals(breed, cat.breed) && Objects.equals(name, cat.name);
+        return yearOfBirth == cat.yearOfBirth && Objects.equals(id, cat.id) && Objects.equals(breed, cat.breed) && Objects.equals(name, cat.name) && Objects.equals(description, cat.description);
     }
 
     @Override
@@ -96,7 +100,7 @@ public class Cat {
                 "id=" + id +
                 ", breed='" + breed + '\'' +
                 ", name='" + name + '\'' +
-                ", yearOfBirth='" + yearOfBirth + '\'' +
+                ", yearOfBirth=" + yearOfBirth +
                 ", description='" + description + '\'' +
                 '}';
     }

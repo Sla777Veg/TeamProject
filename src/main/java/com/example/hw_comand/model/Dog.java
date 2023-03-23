@@ -1,31 +1,36 @@
 package com.example.hw_comand.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
+
 /**
  * Class of Cat
  * @author Kravchuk Vyacheslav
  */
 @Entity
+@Table(name = "dog")
 public class Dog {
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "dog_id")
     private Long id;
 
     /** "Breed" field */
+    @Column(name = "breed")
     private String breed;
 
     /** "Name" field */
+    @Column(name = "name")
     private String name;
 
     /** "Year Of Birth" field */
+    @Column(name = "year_of_birth")
     private int yearOfBirth;
 
     /** "Description" field */
+    @Column(name = "description")
     private String description;
 
     /**
@@ -81,12 +86,12 @@ public class Dog {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Dog dog = (Dog) o;
-        return id == dog.id && yearOfBirth == dog.yearOfBirth && Objects.equals(breed, dog.breed) && Objects.equals(name, dog.name);
+        return yearOfBirth == dog.yearOfBirth && Objects.equals(id, dog.id) && Objects.equals(breed, dog.breed) && Objects.equals(name, dog.name) && Objects.equals(description, dog.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, breed, name, yearOfBirth);
+        return Objects.hash(id, breed, name, yearOfBirth, description);
     }
 
     @Override

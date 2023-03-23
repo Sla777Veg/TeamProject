@@ -3,6 +3,7 @@ package com.example.hw_comand.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -11,43 +12,51 @@ import java.util.Objects;
  * @version 1.0.0
  */
 @Entity
+@Table(name = "person_dog")
 public class PersonDog {
 
     /** "ID" field */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     /** "Name" field */
+    @Column(name = "name")
     private String name;
 
-    /** "Year Of Birth" field */
-    private int yearOfBirth;
 
     /** "Phone" field */
+    @Column(name = "phone")
     private String phone;
 
     /** "Mail" field */
+    @Column(name = "mail")
     private String mail;
 
     /** "Address" field */
+    @Column(name = "address")
     private String address;
 
     /** "id Chat" field */
+    @Column(name = "chat_id")
     private Long chatId;
 
+    /** "Status" field */
+    @Column(name = "status")
     private Status status;
 
+    /** "Dog" field */
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_id")
     private Dog dog;
 
-    @OneToOne(orphanRemoval = true)
-    @JoinTable(name = "person_report_data",
-            joinColumns = @JoinColumn(name = "person_null"),
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "person_dog_report_data",
+            joinColumns = @JoinColumn(name = "person_dog_null"),
             inverseJoinColumns = @JoinColumn(name = "report_data_id"))
-    private ReportData reportData;
+    private Collection<ReportData> reportData;
 
     /**
      * Constructor - creating a new object.
@@ -72,22 +81,26 @@ public class PersonDog {
      * Constructor - creating a new object with certain values.
      * @param id
      * @param name
-     * @param yearOfBirth
      * @param phone
      * @param mail
      * @param address
      * @param chatId
+     * @param status
+     * @param dog
+     * @param reportData
      */
-    public PersonDog(Long id, String name, int yearOfBirth, String phone, String mail, String address, Long chatId) {
+    public PersonDog(Long id, String name, String phone, String mail, String address, Long chatId, Status status, Dog dog, Collection<ReportData> reportData) {
         this.id = id;
         this.name = name;
-        this.yearOfBirth = yearOfBirth;
         this.phone = phone;
         this.mail = mail;
         this.address = address;
         this.chatId = chatId;
-
+        this.status = status;
+        this.dog = dog;
+        this.reportData = reportData;
     }
+
 
     public Long getId() {
         return id;
@@ -97,28 +110,12 @@ public class PersonDog {
         this.id = id;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getYearOfBirth() {
-        return yearOfBirth;
-    }
-
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
     }
 
     public String getPhone() {
@@ -149,11 +146,31 @@ public class PersonDog {
         return chatId;
     }
 
-    public ReportData getReportData() {
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Dog getDog() {
+        return dog;
+    }
+
+    public void setDog(Dog dog) {
+        this.dog = dog;
+    }
+
+    public Collection<ReportData> getReportData() {
         return reportData;
     }
 
-    public void setReportData(ReportData reportData) {
+    public void setReportData(Collection<ReportData> reportData) {
         this.reportData = reportData;
     }
 
@@ -162,12 +179,12 @@ public class PersonDog {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonDog personDog = (PersonDog) o;
-        return id == personDog.id && yearOfBirth == personDog.yearOfBirth && phone == personDog.phone && Objects.equals(name, personDog.name) && Objects.equals(mail, personDog.mail) && Objects.equals(address, personDog.address);
+        return Objects.equals(id, personDog.id) && Objects.equals(name, personDog.name) && Objects.equals(phone, personDog.phone) && Objects.equals(mail, personDog.mail) && Objects.equals(address, personDog.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, yearOfBirth, phone, mail, address);
+        return Objects.hash(id, name, phone, mail, address);
     }
 
     @Override
@@ -175,7 +192,6 @@ public class PersonDog {
         return "PersonDog{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", yearOfBirth=" + yearOfBirth +
                 ", phone='" + phone + '\'' +
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +

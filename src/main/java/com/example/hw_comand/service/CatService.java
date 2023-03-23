@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Class of CatService
@@ -80,7 +80,7 @@ public class CatService {
      * @see CatService
      */
 
-    public List<Cat> getAll() {
+    public Collection<Cat> getAll() {
         logger.info("Was invoked method to get all cats");
         return this.repository.findAll();
     }

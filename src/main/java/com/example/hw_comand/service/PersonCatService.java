@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class PersonCatService {
@@ -91,14 +92,14 @@ public class PersonCatService {
     }
 
     /**
-     * Method to remove a personsCat by chatId.
+     * Method to get a personsCat by chatId.
      *
      * @param chatId
      * @return {@link PersonCatRepository#findByChatId(Long)}
      * @see PersonCatService
      */
-    public Collection<PersonCat> getByChatId(Long chatId) {
-        logger.info("Was invoked method to remove a personsCat by chatId={}", chatId);
+    public Optional<PersonCat> getByChatId(Long chatId) {
+        logger.info("Was invoked method to get a personsCat by chatId={}", chatId);
 
         return this.repository.findByChatId(chatId);
     }
