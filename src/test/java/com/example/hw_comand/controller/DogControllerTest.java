@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see DogService
  * @author Kravchuk Viacheslav
  */
+
 @WebMvcTest(DogController.class)
 class DogControllerTest {
 

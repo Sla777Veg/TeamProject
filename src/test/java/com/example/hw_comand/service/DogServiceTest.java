@@ -24,6 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
  * @see DogRepository
  * @author  Kravchuk Viacheslav
  */
+
 @ExtendWith(MockitoExtension.class)
 public class DogServiceTest {
 
