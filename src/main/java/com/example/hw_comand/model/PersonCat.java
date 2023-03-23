@@ -85,6 +85,24 @@ public class PersonCat {
      * @param mail
      * @param address
      * @param chatId
+     */
+    public PersonCat(Long id, String name, String phone, String mail, String address, Long chatId) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.mail = mail;
+        this.address = address;
+        this.chatId = chatId;
+    }
+
+    /**
+     * Constructor - creating a new object with certain values.
+     * @param id
+     * @param name
+     * @param phone
+     * @param mail
+     * @param address
+     * @param chatId
      * @param status
      * @param cat
      * @param reportData

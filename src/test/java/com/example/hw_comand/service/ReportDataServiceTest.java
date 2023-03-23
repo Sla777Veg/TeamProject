@@ -100,7 +100,7 @@ public class ReportDataServiceTest {
      */
     @Test
     public void findListByChatIdTest() {
-        Set<ReportData> expected = new HashSet<>();
+        Collection<ReportData> expected = new HashSet<>();
 
         ReportData testReport1 = new ReportData();
         testReport1.setChatId(1L);
