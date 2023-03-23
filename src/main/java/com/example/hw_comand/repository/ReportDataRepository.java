@@ -5,7 +5,8 @@ import com.example.hw_comand.model.ReportData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Interface ReportDataRepository.
@@ -15,8 +16,10 @@ import java.util.Set;
 @Repository
 public interface ReportDataRepository extends JpaRepository<ReportData, Long> {
 
-    Set<ReportData> findListByChatId(Long id);
+    Collection<ReportData> findListByChatId(Long id);
 
-    ReportData findByChatId(Long id);
+    Optional<ReportData> findByChatId(Long id);
+
+    Optional<ReportData> findFirstByChatIdOrderByLastMessageDesc(Long id);
 
 }

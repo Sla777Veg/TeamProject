@@ -9,11 +9,7 @@ import org.springframework.stereotype.Service;
 public class BotReplyMessage {
 
     public String getGreeting() {
-        return "Привет!\nДобро пожаловать в наш приют для животных!";
-    }
-
-    public String getPetChoice() {
-        return "Выберите питомца:";
+        return "Привет!\nДобро пожаловать в наш приют для животных!\nВыберите питомца:";
     }
 
     public String getChoice() {
@@ -28,6 +24,11 @@ public class BotReplyMessage {
 
     public String getContactsInfo() {
         return "Часы работы: Пн-Вс с 9:00 до 18:00\nАдрес: г. Астана, ул. Саргуль, 12";
+    }
+
+    public String getPassRegistration() {
+        return "Для оформления пропуска на машину обратитесь к охране по телефону:\n" +
+                "+79110000000";
     }
 
     public String getSafetyRules() {

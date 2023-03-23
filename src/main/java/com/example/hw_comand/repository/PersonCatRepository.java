@@ -3,7 +3,7 @@ package com.example.hw_comand.repository;
 import com.example.hw_comand.model.PersonCat;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Set;
+import java.util.Optional;
 
 /**
  * Interface PersonCatRepository.
@@ -12,6 +12,6 @@ import java.util.Set;
  */
 public interface PersonCatRepository extends JpaRepository<PersonCat, Long> {
 
-    Set<PersonCat> findByChatId(Long chatId);
+    Optional<PersonCat> findByChatId(Long chatId);
 
 }

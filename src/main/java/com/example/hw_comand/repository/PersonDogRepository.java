@@ -4,7 +4,7 @@ import com.example.hw_comand.model.PersonDog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
+import java.util.Optional;
 
 /**
  * Interface PersonDogRepository.
@@ -14,6 +14,6 @@ import java.util.Set;
 @Repository
 public interface PersonDogRepository extends JpaRepository<PersonDog, Long> {
 
-    Set<PersonDog> findByChatId(Long chatId);
+    Optional<PersonDog> findByChatId(Long chatId);
 
 }

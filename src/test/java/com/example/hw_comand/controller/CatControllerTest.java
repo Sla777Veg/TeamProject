@@ -41,7 +41,7 @@ class CatControllerTest {
      */
 
     @Test
-    void getByid() throws Exception {
+    void getById() throws Exception {
         Cat cat = new Cat();
         cat.setId(1L);
         when(catService.getById(anyLong())).thenReturn(cat);

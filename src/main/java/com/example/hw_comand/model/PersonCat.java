@@ -2,6 +2,7 @@ package com.example.hw_comand.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -10,43 +11,52 @@ import java.util.Objects;
  * @version 1.0.0
  */
 @Entity
+@Table(name = "person_cat")
 public class PersonCat {
 
     /** "ID" field */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     /** "Name" field */
+    @Column(name = "name")
     private String name;
 
-    /** "Year Of Birth" field */
-    private int yearOfBirth;
 
     /** "Phone" field */
+    @Column(name = "phone")
     private String phone;
 
     /** "Mail" field */
+    @Column(name = "mail")
     private String mail;
 
     /** "Address" field */
+    @Column(name = "address")
     private String address;
 
     /** "id Chat" field */
+    @Column(name = "chat_id")
     private Long chatId;
 
+    /** "Status" field */
+    @Column(name = "status")
     private Status status;
 
+    /** "Cat" field */
     @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_id")
     private Cat cat;
 
-    @OneToOne(orphanRemoval = true)
+    /** "Report data" field */
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "person_cat_report_data",
             joinColumns = @JoinColumn(name = "person_cat_null"),
             inverseJoinColumns = @JoinColumn(name = "report_data_id"))
-    private ReportData reportData;
+    private Collection<ReportData> reportData;
 
     /**
      * Constructor - creating a new object.
@@ -71,21 +81,26 @@ public class PersonCat {
      * Constructor - creating a new object with certain values.
      * @param id
      * @param name
-     * @param yearOfBirth
      * @param phone
      * @param mail
      * @param address
      * @param chatId
+     * @param status
+     * @param cat
+     * @param reportData
      */
-    public PersonCat(Long id, String name, int yearOfBirth, String phone, String mail, String address, Long chatId) {
+    public PersonCat(Long id, String name, String phone, String mail, String address, Long chatId, Status status, Cat cat, Collection<ReportData> reportData) {
         this.id = id;
         this.name = name;
-        this.yearOfBirth = yearOfBirth;
         this.phone = phone;
         this.mail = mail;
         this.address = address;
         this.chatId = chatId;
+        this.status = status;
+        this.cat = cat;
+        this.reportData = reportData;
     }
+
 
     public Long getId() {
         return id;
@@ -95,28 +110,12 @@ public class PersonCat {
         this.id = id;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getYearOfBirth() {
-        return yearOfBirth;
-    }
-
-    public void setYearOfBirth(int yearOfBirth) {
-        this.yearOfBirth = yearOfBirth;
     }
 
     public String getPhone() {
@@ -147,11 +146,31 @@ public class PersonCat {
         return chatId;
     }
 
-    public ReportData getReportData() {
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Cat getCat() {
+        return cat;
+    }
+
+    public void setCat(Cat cat) {
+        this.cat = cat;
+    }
+
+    public Collection<ReportData> getReportData() {
         return reportData;
     }
 
-    public void setReportData(ReportData reportData) {
+    public void setReportData(Collection<ReportData> reportData) {
         this.reportData = reportData;
     }
 
@@ -160,12 +179,12 @@ public class PersonCat {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonCat personCat = (PersonCat) o;
-        return id == personCat.id && yearOfBirth == personCat.yearOfBirth && phone == personCat.phone && Objects.equals(name, personCat.name) && Objects.equals(mail, personCat.mail) && Objects.equals(address, personCat.address);
+        return Objects.equals(id, personCat.id) && Objects.equals(name, personCat.name) && Objects.equals(phone, personCat.phone) && Objects.equals(mail, personCat.mail) && Objects.equals(address, personCat.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, yearOfBirth, phone, mail, address);
+        return Objects.hash(id, name, phone, mail, address);
     }
 
     @Override
@@ -173,7 +192,6 @@ public class PersonCat {
         return "PersonCat{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", yearOfBirth=" + yearOfBirth +
                 ", phone='" + phone + '\'' +
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +

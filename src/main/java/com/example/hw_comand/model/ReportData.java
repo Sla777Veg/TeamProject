@@ -1,9 +1,6 @@
 package com.example.hw_comand.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -14,46 +11,41 @@ import java.util.Objects;
  * @version 1.0.0
  */
 @Entity
+@Table(name = "report_data")
 public class ReportData {
 
     /** "ID" field */
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "report_data_id")
+    private Long id;
 
     /** "id Chat" field */
+    @Column(name = "chat_id")
     private Long chatId;
 
-    /** "Ration" field */
-    private String ration;
+    /** "Description" field */
+    @Column(name = "description")
+    private String description;
 
-    /** "Health" field */
-    private String health;
 
-    /** "Habits" field */
-    private String habits;
-
-    /** "Days" field */
-    private long days;
+    /** "Report Days" field */
+    @Column(name = "report_days")
+    private long reportDays;
 
     /** "File Path" field */
+    @Column(name = "file_path")
     private String filePath;
 
-    /** "File Size" field */
-    private long fileSize;
-
     /** "Data" field */
+    @Column(name = "data")
     @Lob
     private byte[] data;
 
-    /** "Caption" field */
-    private String caption;
 
-    /** "LastMessage" field */
+    /** "Last Message" field */
+    @Column(name = "last_message")
     private Date lastMessage;
-
-    /** "LastMessages" field */
-    private Long lastMessages;
 
     /**
      * Constructor - creating a new object.
@@ -74,55 +66,29 @@ public class ReportData {
 
     /**
      * Constructor - creating a new object with certain values.
-     * @param ration
-     * @param health
-     * @param habits
-     */
-    public ReportData(String ration, String health, String habits) {
-        this.ration = ration;
-        this.health = health;
-        this.habits = habits;
-    }
-
-    /**
-     * Constructor - creating a new object with certain values.
      * @param chatId
+     * @param description
+     * @param reportDays
+     * @param filePath
      * @param data
-     * @param ration
-     * @param health
-     * @param habits
+     * @param lastMessage
      */
-    public ReportData(Long chatId, byte[] data,
-                      String ration, String health, String habits) {
+    public ReportData(Long chatId, String description, long reportDays, String filePath, byte[] data, Date lastMessage) {
         this.chatId = chatId;
+        this.description = description;
+        this.reportDays = reportDays;
+        this.filePath = filePath;
         this.data = data;
-        this.ration = ration;
-        this.health = health;
-        this.habits = habits;
-    }
-
-    public Long getLastMessages() {
-        return lastMessages;
-    }
-
-    public void setLastMessages(Long lastMessages) {
-        this.lastMessages = lastMessages;
-    }
-
-    public Date getLastMessage() {
-        return lastMessage;
-    }
-
-    public void setLastMessage(Date lastMessage) {
         this.lastMessage = lastMessage;
     }
 
-    public String getCaption() {
-        return caption;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getChatId() {
@@ -132,20 +98,29 @@ public class ReportData {
     public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public long getReportDays() {
+        return reportDays;
+    }
+
+    public void setReportDays(long reportDays) {
+        this.reportDays = reportDays;
+    }
+
     public String getFilePath() {
         return filePath;
     }
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    public long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(long fileSize) {
-        this.fileSize = fileSize;
     }
 
     public byte[] getData() {
@@ -156,36 +131,12 @@ public class ReportData {
         this.data = data;
     }
 
-    public String getRation() {
-        return ration;
+    public Date getLastMessage() {
+        return lastMessage;
     }
 
-    public void setRation(String ration) {
-        this.ration = ration;
-    }
-
-    public String getHealth() {
-        return health;
-    }
-
-    public void setHealth(String health) {
-        this.health = health;
-    }
-
-    public String getHabits() {
-        return habits;
-    }
-
-    public void setHabits(String habits) {
-        this.habits = habits;
-    }
-
-    public long getDays() {
-        return days;
-    }
-
-    public void setDays(Long days) {
-        this.days = days;
+    public void setLastMessage(Date lastMessage) {
+        this.lastMessage = lastMessage;
     }
 
     @Override
@@ -193,12 +144,12 @@ public class ReportData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReportData that = (ReportData) o;
-        return id == that.id && Objects.equals(ration, that.ration) && Objects.equals(health, that.health) && Objects.equals(habits, that.habits) && Objects.equals(days, that.days);
+        return reportDays == that.reportDays && Objects.equals(id, that.id) && Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ration, health, habits, days);
+        return Objects.hash(id, description, reportDays);
     }
 
     @Override
@@ -206,19 +157,11 @@ public class ReportData {
         return "ReportData{" +
                 "id=" + id +
                 ", chatId=" + chatId +
-                ", ration='" + ration + '\'' +
-                ", health='" + health + '\'' +
-                ", habits='" + habits + '\'' +
-                ", days=" + days +
-                ", filePath='" + filePath + '\'' +
-                ", fileSize=" + fileSize +
+                ", description='" + description + '\'' +
+                ", reportDays=" + reportDays +
+                ", filePath='" + filePath +
                 ", data=" + Arrays.toString(data) +
-                ", caption='" + caption + '\'' +
                 ", lastMessage=" + lastMessage +
-                ", lastMessageMs=" + lastMessages +
                 '}';
-    }
-
-    public void setLastMessageMs(Long timeDate) {
     }
 }

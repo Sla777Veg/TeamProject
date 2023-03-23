@@ -41,7 +41,7 @@ public class CatServiceTest {
      */
 
     @Test
-    public void getByidTest() {
+    public void getByIdTest() {
         Cat expected = new Cat();
         expected.setName("testName");
         expected.setDescription("testDesc");

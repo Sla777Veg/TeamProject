@@ -11,10 +11,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Optional;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 
 /**
  * Class of PersonDogController.
- * @author Tatiana Alekseev
+ * @author Tatiana Alekseeva
  * @version 1.0.0
  */
 @RestController
@@ -109,7 +113,10 @@ public class PersonDogController {
     @GetMapping("/all")
     public Collection<PersonDog> getAll(@RequestParam(required = false) Long chatId) {
         if (chatId != null) {
-            return this.service.getByChatId(chatId);
+            Optional<PersonDog> dogPerson =  this.service.getByChatId(chatId);
+            if (dogPerson.isPresent()) {
+                return singletonList(dogPerson.get());
+            } return emptyList();
         }
         return this.service.getAll();
     }
