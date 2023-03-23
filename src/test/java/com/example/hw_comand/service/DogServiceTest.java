@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
  * Class for testing DogService
  * @see DogService
  * @see DogRepository
- * @author Kravchuk Viacheslav
+ * @author  Kravchuk Viacheslav
  */
 @ExtendWith(MockitoExtension.class)
 public class DogServiceTest {
