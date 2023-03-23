@@ -1,8 +1,7 @@
-
 package com.example.hw_comand.controller;
 
-import com.example.hw_comand.model.Cat;
-import com.example.hw_comand.service.CatService;
+import com.example.hw_comand.model.Dog;
+import com.example.hw_comand.service.DogService;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import java.util.List;
 
@@ -20,125 +20,118 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Class for testing CatController
- *
- * @author Dmitriy Kuzeev
- * @see CatService
+ * Class for testing DogController
+ * @see DogService
+ * @author Kravchuk Viacheslav
  */
+@WebMvcTest(DogController.class)
+class DogControllerTest {
 
-@WebMvcTest(CatController.class)
-class CatControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
     @MockBean
-    private CatService catService;
+    private DogService dogService;
 
     /**
-     * Test getById method in CatController
+     * Test for <b>getById()</b> method in DogController
      * <br>
-     * Mockito: when <b>CatService::getById()</b> method called, returns <b>cat</b> object
-     *
+     * Mockito: when <b>DogService::getById()</b> method called, returns <b>dog</b> object
      * @throws Exception
      */
-
     @Test
-    void getByid() throws Exception {
-        Cat cat = new Cat();
-        cat.setId(1L);
-        when(catService.getById(anyLong())).thenReturn(cat);
+    void getById() throws Exception {
+        Dog dog = new Dog();
+        dog.setId(1L);
+
+        when(dogService.getById(anyLong())).thenReturn(dog);
 
         mockMvc.perform(
-                        get("/cat/{id}", 1L))
+                        get("/dog/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1));
 
-        verify(catService).getById(1L);
+        verify(dogService).getById(1L);
     }
 
-
     /**
-     * Test for save method in CatController
+     * Test for <b>save()</b> method in DogController
      * <br>
-     * Mockito: when <b>CatService::create()</b> method called, returns <b>cat</b> object
-     *
+     * Mockito: when <b>DogService::create()</b> method called, returns <b>dog</b> object
      * @throws Exception
      */
-
     @Test
     void save() throws Exception {
-        Cat cat = new Cat();
-        cat.setId(1L);
-        cat.setName("cat");
+        Dog dog = new Dog();
+        dog.setId(1L);
+        dog.setName("dog");
         JSONObject userObject = new JSONObject();
         userObject.put("id", 1L);
-        userObject.put("name", "cat");
+        userObject.put("name", "dog");
 
-        when(catService.create(cat)).thenReturn(cat);
+        when(dogService.create(dog)).thenReturn(dog);
 
         mockMvc.perform(
-                        post("/cat")
+                        post("/dog")
                                 .content(userObject.toString())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(userObject.toString()));
 
-        verify(catService).create(cat);
+        verify(dogService).create(dog);
     }
 
     /**
-     * Test for update method in CatController
+     * Test for <b>update()</b> method in DogController
      * <br>
-     * Mockito: when <b>CatService::update()</b> method called, returns <b>cat</b> object
-     *
+     * Mockito: when <b>DogService::getById()</b> method called, returns <b>dog</b> object
      * @throws Exception
      */
-
     @Test
     void update() throws Exception {
-        Cat cat = new Cat();
-        cat.setId(1L);
-        cat.setName("cat new");
+        Dog dog = new Dog();
+        dog.setId(1L);
+        dog.setName("dog new");
         JSONObject userObject = new JSONObject();
         userObject.put("id", 1L);
-        userObject.put("name", "cat new");
+        userObject.put("name", "dog new");
 
-        when(catService.update(cat)).thenReturn(cat);
+        when(dogService.update(dog)).thenReturn(dog);
 
         mockMvc.perform(
-                        put("/cat")
+                        put("/dog")
                                 .content(userObject.toString())
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(userObject.toString()));
 
-        verify(catService).update(cat);
+        verify(dogService).update(dog);
     }
 
     /**
-     * Test for remove method in CatController
-     *
+     * Test for <b>remove()</b> method in DogController
      * @throws Exception
      */
-
     @Test
     void remove() throws Exception {
         mockMvc.perform(
-                        delete("/cat/{id}", 1))
+                        delete("/dog/{id}", 1))
                 .andExpect(status().isOk());
-        verify(catService).removeById(1L);
+        verify(dogService).removeById(1L);
     }
 
     /**
-     * Test for getAll method in CatController
+     * Test for <b>getAll()</b> method in DogController
+     * <br>
+     * Mockito: when <b>DogService::getAll()</b> method called, returns collection with <b>new Dog</b> object
      * @throws Exception
      */
-
     @Test
     void getAll() throws Exception {
-        when(catService.getAll()).thenReturn(List.of(new Cat()));
+        when(dogService.getAll()).thenReturn(List.of(new Dog()));
+
         mockMvc.perform(
-                        get("/cat/all"))
+                        get("/dog/all"))
                 .andExpect(status().isOk());
     }
-
 }
