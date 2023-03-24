@@ -1,6 +1,7 @@
 package com.example.hw_comand.listener;
 
 import com.example.hw_comand.menu_buttons.BotReplyMessage;
+import com.example.hw_comand.menu_buttons.ButtonConstant;
 import com.example.hw_comand.menu_buttons.ButtonMenu;
 import com.example.hw_comand.model.PersonCat;
 import com.example.hw_comand.model.PersonDog;
@@ -37,9 +38,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Класс BotUpdatesListener реализует интерфейс UpdatesListener.
@@ -59,9 +60,10 @@ public class BotUpdatesListener implements UpdatesListener {
     private final PersonCatRepository personCatRepository;
 
     private boolean isPetDog = false;
-    private static final Pattern REPORT_PATTERN = Pattern.compile("(Рацион:)(\\s)(\\W+)\n" +
-            "(Самочувствие:)(\\s)(\\W+)\n" +
-            "(Изменения в поведении:)(\\s)(\\W+)");
+    private static final Pattern REPORT_PATTERN = Pattern.compile("""
+            (Рацион:)(\\s)(\\W+)
+            (Самочувствие:)(\\s)(\\W+)
+            (Изменения в поведении:)(\\s)(\\W+)""");
 
     private static final Pattern PHONE_PATTERN = Pattern.compile("[+7].\\d{10}");
 
@@ -102,43 +104,43 @@ public class BotUpdatesListener implements UpdatesListener {
                     String data = callbackQuery.data();
 
                     switch (data) {
-                        case ("CAT"):
+                        case (ButtonConstant.CAT):
                             isPetDog = false;
                             buttonMenu.chooseMainMenu(chatId);
                             break;
-                        case ("DOG"):
+                        case (ButtonConstant.DOG):
                             isPetDog = true;
                             buttonMenu.chooseMainMenu(chatId);
                             break;
-                        case ("GENERAL_INFO"):
+                        case (ButtonConstant.GENERAL_INFO):
                             buttonMenu.chooseGeneralInfo(chatId);
                             break;
-                        case ("ABOUT_SHELTER"):
+                        case (ButtonConstant.ABOUT_SHELTER):
                             sendMessage(chatId, botReplyMessage.getShelterInfo());
                             break;
-                        case ("SCHEDULE_ADDRESS_ROUTE"):
+                        case (ButtonConstant.SCHEDULE_ADDRESS_ROUTE):
                             sendMessage(chatId, botReplyMessage.getContactsInfo());
                             break;
-                        case ("PASS_REGISTRATION"):
+                        case (ButtonConstant.PASS_REGISTRATION):
                             sendMessage(chatId, botReplyMessage.getPassRegistration());
                             break;
-                        case ("SAFETY_RULES"):
+                        case (ButtonConstant.SAFETY_RULES):
                             sendMessage(chatId, botReplyMessage.getSafetyRules());
                             break;
-                        case ("CALLBACK"):
+                        case (ButtonConstant.CALLBACK):
                             sendMessage(chatId, botReplyMessage.callback());
                             break;
-                        case ("CALL_VOLUNTEER"):
+                        case (ButtonConstant.CALL_VOLUNTEER):
                             sendMessage(chatId, botReplyMessage.callVolunteer());
                             break;
-                        case ("ADOPTION_INFO"):
+                        case (ButtonConstant.ADOPTION_INFO):
                             if (isPetDog) {
                                 sendMessage(chatId, botReplyMessage.dogAdoptionInfo());
                             } else {
                                 sendMessage(chatId, botReplyMessage.catAdoptionInfo());
                             }
                             break;
-                        case ("SEND_REPORT"):
+                        case (ButtonConstant.SEND_REPORT):
                             sendMessage(chatId, botReplyMessage.sendReport());
                             break;
                         default:
@@ -174,30 +176,15 @@ public class BotUpdatesListener implements UpdatesListener {
     private void sendReport(Update update) {
         Long chatId = update.message().chat().id();
         Integer reportTime = update.message().date();
-        Date reportDate = new Date(reportTime * 1000);
+        Date reportDate = new Date(TimeUnit.MINUTES.toMillis(reportTime));
+        PhotoSize telegramPhoto = update.message().photo()[update.message().photo().length - 1];
         String caption = update.message().caption();
         String text = update.message().text();
         if (caption != null) {
             Matcher matcher = REPORT_PATTERN.matcher(caption);
             if (matcher.matches()) {
                 String description = matcher.group(0);
-
-                PhotoSize telegramPhoto = update.message().photo()[update.message().photo().length - 1];
-                GetFile getFile = new GetFile(telegramPhoto.fileId());
-                GetFileResponse getFileResponse = telegramBot.execute(getFile);
-                if (getFileResponse.isOk()) {
-                    try {
-                        String extension = StringUtils.getFilenameExtension(getFileResponse.file().filePath());
-                        byte[] photo = telegramBot.getFileContent(getFileResponse.file());
-                        Path path = Files.write(Paths.get(UUID.randomUUID() + "." + extension), photo);
-
-                        reportDataService.uploadReportData(chatId, photo, path, description, reportDate);
-                        sendMessage(chatId, "Ваш отчёт принят");
-                    } catch (IOException e) {
-                        logger.error("Error during sending photo: {}", e);
-                        sendMessage(chatId, "Ошибка при загрузке фотографии");
-                    }
-                }
+                savePhoto(chatId, reportDate, description, telegramPhoto);
             } else {
                 sendMessage(chatId, "Некорректный формат описания");
             }
@@ -205,23 +192,7 @@ public class BotUpdatesListener implements UpdatesListener {
             Matcher matcher = REPORT_PATTERN.matcher(text);
             if (matcher.matches()) {
                 String description = matcher.group(0);
-
-                PhotoSize telegramPhoto = update.message().photo()[update.message().photo().length - 1];
-                GetFile getFile = new GetFile(telegramPhoto.fileId());
-                GetFileResponse getFileResponse = telegramBot.execute(getFile);
-                if (getFileResponse.isOk()) {
-                    try {
-                        String extension = StringUtils.getFilenameExtension(getFileResponse.file().filePath());
-                        byte[] photo = telegramBot.getFileContent(getFileResponse.file());
-                        Path path = Files.write(Paths.get(UUID.randomUUID() + "." + extension), photo);
-
-                        reportDataService.uploadReportData(chatId, photo, path, description, reportDate);
-                        sendMessage(chatId, "Ваш отчёт принят");
-                    } catch (IOException e) {
-                        logger.error("Error during sending photo: {}", e);
-                        sendMessage(chatId, "Ошибка при загрузке фотографии");
-                    }
-                }
+                savePhoto(chatId, reportDate, description, telegramPhoto);
             } else {
                 sendMessage(chatId, "Некорректный формат описания");
             }
@@ -244,11 +215,9 @@ public class BotUpdatesListener implements UpdatesListener {
             String phone = matcher.group(0);
 
             List<PersonDog> existingPersonDog = personDogRepository.findAll().stream()
-                    .filter(i -> i.getChatId() == chatId)
-                    .collect(Collectors.toList());
+                    .filter(i -> Objects.equals(i.getChatId(), chatId)).toList();
             List<PersonCat> existingPersonCat = personCatRepository.findAll().stream()
-                    .filter(i -> i.getChatId() == chatId)
-                    .collect(Collectors.toList());
+                    .filter(i -> Objects.equals(i.getChatId(), chatId)).toList();
             if (!existingPersonDog.isEmpty() || !existingPersonCat.isEmpty()) {
                 sendMessage(chatId, "Ваш номер уже есть в базе");
             }
@@ -293,6 +262,32 @@ public class BotUpdatesListener implements UpdatesListener {
                 .filter(i -> i.getReportDays() == 30)
                 .forEach(s -> sendMessage(s.getChatId(),
                         "Поздравляем, вы прошли испытательный срок!"));
+    }
+
+    /**
+     * Метод-шаблон для сохранения фотографии от пользователя.
+     * @param chatId
+     * @param reportDate
+     * @param description
+     * @param telegramPhoto
+     * @see BotUpdatesListener
+     */
+    private void savePhoto(Long chatId, Date reportDate, String description, PhotoSize telegramPhoto) {
+        GetFile getFile = new GetFile(telegramPhoto.fileId());
+        GetFileResponse getFileResponse = telegramBot.execute(getFile);
+        if (getFileResponse.isOk()) {
+            try {
+                String extension = StringUtils.getFilenameExtension(getFileResponse.file().filePath());
+                byte[] photo = telegramBot.getFileContent(getFileResponse.file());
+                Path path = Files.write(Paths.get(UUID.randomUUID() + "." + extension), photo);
+
+                reportDataService.uploadReportData(chatId, photo, path, description, reportDate);
+                sendMessage(chatId, "Ваш отчёт принят");
+            } catch (IOException e) {
+                sendMessage(chatId, "Ошибка при загрузке фотографии");
+            }
+        }
+        logger.error("Error during saving photo: {}", getFileResponse.description());
     }
 
 }

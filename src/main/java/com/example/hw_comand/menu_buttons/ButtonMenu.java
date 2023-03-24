@@ -32,10 +32,10 @@ public class ButtonMenu {
         logger.info("The pet choice menu has been chosen: {}, {}", chatId, "Вызвано меню выбора питомца");
 
 
-        InlineKeyboardButton catButton = new InlineKeyboardButton(ButtonConstant.CAT.getCommand());
-        InlineKeyboardButton dogButton = new InlineKeyboardButton(ButtonConstant.DOG.getCommand());
-        catButton.callbackData(ButtonConstant.CAT.getName());
-        dogButton.callbackData(ButtonConstant.DOG.getName());
+        InlineKeyboardButton catButton = new InlineKeyboardButton(ButtonConstant.CAT_COMMAND);
+        InlineKeyboardButton dogButton = new InlineKeyboardButton(ButtonConstant.DOG_COMMAND);
+        catButton.callbackData(ButtonConstant.CAT);
+        dogButton.callbackData(ButtonConstant.DOG);
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(catButton, dogButton);
 
@@ -50,15 +50,15 @@ public class ButtonMenu {
     public void chooseMainMenu(Long chatId) {
         logger.info("The main menu has been chosen: {},  {}", chatId, "Вызвано основное меню");
 
-        InlineKeyboardButton button1 = new InlineKeyboardButton(ButtonConstant.GENERAL_INFO.getCommand());
-        InlineKeyboardButton button2 = new InlineKeyboardButton(ButtonConstant.ADOPTION_INFO.getCommand());
-        InlineKeyboardButton button3 = new InlineKeyboardButton(ButtonConstant.SEND_REPORT.getCommand());
-        InlineKeyboardButton button4 = new InlineKeyboardButton(ButtonConstant.CALL_VOLUNTEER.getCommand());
+        InlineKeyboardButton button1 = new InlineKeyboardButton(ButtonConstant.GENERAL_INFO_COMMAND);
+        InlineKeyboardButton button2 = new InlineKeyboardButton(ButtonConstant.ADOPTION_INFO_COMMAND);
+        InlineKeyboardButton button3 = new InlineKeyboardButton(ButtonConstant.SEND_REPORT_COMMAND);
+        InlineKeyboardButton button4 = new InlineKeyboardButton(ButtonConstant.CALL_VOLUNTEER_COMMAND);
 
-        button1.callbackData(ButtonConstant.GENERAL_INFO.getName());
-        button2.callbackData(ButtonConstant.ADOPTION_INFO.getName());
-        button3.callbackData(ButtonConstant.SEND_REPORT.getName());
-        button4.callbackData(ButtonConstant.CALL_VOLUNTEER.getName());
+        button1.callbackData(ButtonConstant.GENERAL_INFO);
+        button2.callbackData(ButtonConstant.ADOPTION_INFO);
+        button3.callbackData(ButtonConstant.SEND_REPORT);
+        button4.callbackData(ButtonConstant.CALL_VOLUNTEER);
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
         keyboardMarkup.addRow(button3, button4);
@@ -74,19 +74,19 @@ public class ButtonMenu {
     public void chooseGeneralInfo(Long chatId) {
         logger.info("The general information menu has been chosen: {},  {}", chatId, "Вызвано меню с информацией о приюте");
 
-        InlineKeyboardButton button1 = new InlineKeyboardButton(ButtonConstant.ABOUT_SHELTER.getCommand());
-        InlineKeyboardButton button2 = new InlineKeyboardButton(ButtonConstant.SCHEDULE_ADDRESS_ROUTE.getCommand());
-        InlineKeyboardButton button3 = new InlineKeyboardButton(ButtonConstant.PASS_REGISTRATION.getCommand());
-        InlineKeyboardButton button4 = new InlineKeyboardButton(ButtonConstant.SAFETY_RULES.getCommand());
-        InlineKeyboardButton button5 = new InlineKeyboardButton(ButtonConstant.CALLBACK.getCommand());
-        InlineKeyboardButton button6 = new InlineKeyboardButton(ButtonConstant.CALL_VOLUNTEER.getCommand());
+        InlineKeyboardButton button1 = new InlineKeyboardButton(ButtonConstant.ABOUT_SHELTER_COMMAND);
+        InlineKeyboardButton button2 = new InlineKeyboardButton(ButtonConstant.SCHEDULE_ADDRESS_ROUTE_COMMAND);
+        InlineKeyboardButton button3 = new InlineKeyboardButton(ButtonConstant.PASS_REGISTRATION_COMMAND);
+        InlineKeyboardButton button4 = new InlineKeyboardButton(ButtonConstant.SAFETY_RULES_COMMAND);
+        InlineKeyboardButton button5 = new InlineKeyboardButton(ButtonConstant.CALLBACK_COMMAND);
+        InlineKeyboardButton button6 = new InlineKeyboardButton(ButtonConstant.CALL_VOLUNTEER_COMMAND);
 
-        button1.callbackData(ButtonConstant.ABOUT_SHELTER.getName());
-        button2.callbackData(ButtonConstant.SCHEDULE_ADDRESS_ROUTE.getName());
-        button3.callbackData(ButtonConstant.PASS_REGISTRATION.getName());
-        button4.callbackData(ButtonConstant.SAFETY_RULES.getName());
-        button5.callbackData(ButtonConstant.CALLBACK.getName());
-        button6.callbackData(ButtonConstant.CALL_VOLUNTEER.getName());
+        button1.callbackData(ButtonConstant.ABOUT_SHELTER);
+        button2.callbackData(ButtonConstant.SCHEDULE_ADDRESS_ROUTE);
+        button3.callbackData(ButtonConstant.PASS_REGISTRATION);
+        button4.callbackData(ButtonConstant.SAFETY_RULES);
+        button5.callbackData(ButtonConstant.CALLBACK);
+        button6.callbackData(ButtonConstant.CALL_VOLUNTEER);
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
         keyboardMarkup.addRow(button3, button4);
