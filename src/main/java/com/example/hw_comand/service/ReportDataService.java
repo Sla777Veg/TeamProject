@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 
 /**
  * Class of ReportDataService.
@@ -99,13 +98,9 @@ public class ReportDataService {
         logger.info("Was invoked method to findListByChatId a report by chatId={}", chatId);
 
         if (chatId != null) {
-            Optional<ReportData> reportData = reportRepository.findByChatId(chatId);
-            if (reportData.isPresent()) {
-                return singletonList(reportData.get());
-            }
-            return emptyList();
+            return this.reportRepository.findListByChatId(chatId);
         }
-        return this.reportRepository.findListByChatId(chatId);
+        return emptyList();
     }
 
     /**
