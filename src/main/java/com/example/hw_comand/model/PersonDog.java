@@ -42,6 +42,10 @@ public class PersonDog {
     @Column(name = "chat_id")
     private Long chatId;
 
+    /** "Pet type" field */
+    @Column(name = "pet_type")
+    private PetType petType;
+
     /** "Status" field */
     @Column(name = "status")
     private Status status;
@@ -79,6 +83,18 @@ public class PersonDog {
 
     /**
      * Constructor - creating a new object with certain values.
+     * @param name
+     * @param chatId
+     * @param petType
+     */
+    public PersonDog(String name, Long chatId, PetType petType) {
+        this.name = name;
+        this.chatId = chatId;
+        this.petType = petType;
+    }
+
+    /**
+     * Constructor - creating a new object with certain values.
      * @param id
      * @param name
      * @param phone
@@ -103,17 +119,19 @@ public class PersonDog {
      * @param mail
      * @param address
      * @param chatId
+     * @param petType
      * @param status
      * @param dog
      * @param reportData
      */
-    public PersonDog(Long id, String name, String phone, String mail, String address, Long chatId, Status status, Dog dog, Collection<ReportData> reportData) {
+    public PersonDog(Long id, String name, String phone, String mail, String address, Long chatId, PetType petType, Status status, Dog dog, Collection<ReportData> reportData) {
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.mail = mail;
         this.address = address;
         this.chatId = chatId;
+        this.petType = petType;
         this.status = status;
         this.dog = dog;
         this.reportData = reportData;
@@ -192,6 +210,14 @@ public class PersonDog {
         this.reportData = reportData;
     }
 
+    public PetType getPetType() {
+        return petType;
+    }
+
+    public void setPetType(PetType petType) {
+        this.petType = petType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -214,6 +240,7 @@ public class PersonDog {
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +
                 ", chatId=" + chatId +
+                ", petType=" + petType +
                 ", status=" + status +
                 ", dog=" + dog +
                 ", reportData=" + reportData +

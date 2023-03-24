@@ -41,6 +41,10 @@ public class PersonCat {
     @Column(name = "chat_id")
     private Long chatId;
 
+    /** "Pet type" field */
+    @Column(name = "pet_type")
+    private PetType petType;
+
     /** "Status" field */
     @Column(name = "status")
     private Status status;
@@ -79,6 +83,18 @@ public class PersonCat {
 
     /**
      * Constructor - creating a new object with certain values.
+     * @param name
+     * @param chatId
+     * @param petType
+     */
+    public PersonCat(String name, Long chatId, PetType petType) {
+        this.name = name;
+        this.chatId = chatId;
+        this.petType = petType;
+    }
+
+    /**
+     * Constructor - creating a new object with certain values.
      * @param id
      * @param name
      * @param phone
@@ -97,27 +113,28 @@ public class PersonCat {
 
     /**
      * Constructor - creating a new object with certain values.
-     * @param id
      * @param name
      * @param phone
      * @param mail
      * @param address
      * @param chatId
+     * @param petType
      * @param status
      * @param cat
      * @param reportData
      */
-    public PersonCat(Long id, String name, String phone, String mail, String address, Long chatId, Status status, Cat cat, Collection<ReportData> reportData) {
-        this.id = id;
+    public PersonCat(String name, String phone, String mail, String address, Long chatId, PetType petType, Status status, Cat cat, Collection<ReportData> reportData) {
         this.name = name;
         this.phone = phone;
         this.mail = mail;
         this.address = address;
         this.chatId = chatId;
+        this.petType = petType;
         this.status = status;
         this.cat = cat;
         this.reportData = reportData;
     }
+
 
 
     public Long getId() {
@@ -192,6 +209,14 @@ public class PersonCat {
         this.reportData = reportData;
     }
 
+    public PetType getPetType() {
+        return petType;
+    }
+
+    public void setPetType(PetType petType) {
+        this.petType = petType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -214,6 +239,7 @@ public class PersonCat {
                 ", mail='" + mail + '\'' +
                 ", address='" + address + '\'' +
                 ", chatId=" + chatId +
+                ", petType=" + petType +
                 ", status=" + status +
                 ", cat=" + cat +
                 ", reportData=" + reportData +

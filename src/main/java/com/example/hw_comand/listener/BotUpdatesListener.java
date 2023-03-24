@@ -5,6 +5,7 @@ import com.example.hw_comand.menu_buttons.ButtonConstant;
 import com.example.hw_comand.menu_buttons.ButtonMenu;
 import com.example.hw_comand.model.PersonCat;
 import com.example.hw_comand.model.PersonDog;
+import com.example.hw_comand.model.PetType;
 import com.example.hw_comand.model.ReportData;
 import com.example.hw_comand.repository.PersonCatRepository;
 import com.example.hw_comand.repository.PersonDogRepository;
@@ -59,7 +60,6 @@ public class BotUpdatesListener implements UpdatesListener {
     private final PersonDogRepository personDogRepository;
     private final PersonCatRepository personCatRepository;
 
-    private boolean isPetDog = false;
     private static final Pattern REPORT_PATTERN = Pattern.compile("""
             (Рацион:)(\\s)(\\W+)
             (Самочувствие:)(\\s)(\\W+)
@@ -102,14 +102,15 @@ public class BotUpdatesListener implements UpdatesListener {
                     Long chatId = update.callbackQuery().message().chat().id();
                     CallbackQuery callbackQuery = update.callbackQuery();
                     String data = callbackQuery.data();
+                    String name = update.callbackQuery().message().chat().firstName();
 
                     switch (data) {
                         case (ButtonConstant.CAT):
-                            isPetDog = false;
+                            personCatRepository.save(new PersonCat(name, chatId, PetType.CAT));
                             buttonMenu.chooseMainMenu(chatId);
                             break;
                         case (ButtonConstant.DOG):
-                            isPetDog = true;
+                            personDogRepository.save(new PersonDog(name, chatId, PetType.DOG));
                             buttonMenu.chooseMainMenu(chatId);
                             break;
                         case (ButtonConstant.GENERAL_INFO):
@@ -134,9 +135,9 @@ public class BotUpdatesListener implements UpdatesListener {
                             sendMessage(chatId, botReplyMessage.callVolunteer());
                             break;
                         case (ButtonConstant.ADOPTION_INFO):
-                            if (isPetDog) {
+                            if (personDogRepository.findByChatId(chatId).isPresent()) {
                                 sendMessage(chatId, botReplyMessage.dogAdoptionInfo());
-                            } else {
+                            } else if (personCatRepository.findByChatId(chatId).isPresent()){
                                 sendMessage(chatId, botReplyMessage.catAdoptionInfo());
                             }
                             break;
@@ -214,23 +215,31 @@ public class BotUpdatesListener implements UpdatesListener {
         if (matcher.matches()) {
             String phone = matcher.group(0);
 
-            List<PersonDog> existingPersonDog = personDogRepository.findAll().stream()
-                    .filter(i -> Objects.equals(i.getChatId(), chatId)).toList();
-            List<PersonCat> existingPersonCat = personCatRepository.findAll().stream()
-                    .filter(i -> Objects.equals(i.getChatId(), chatId)).toList();
-            if (!existingPersonDog.isEmpty() || !existingPersonCat.isEmpty()) {
-                sendMessage(chatId, "Ваш номер уже есть в базе");
+            if (personCatRepository.findByChatId(chatId).isPresent()) {
+                PersonCat personCat = personCatRepository.findByChatId(chatId).get();
+                if (personCat.getPhone() != null) {
+                    sendMessage(chatId, "Ваш номер уже есть в базе");
+                } else {
+                    personCat.setPhone(phone);
+                    personCat.setName(firstName);
+                    personCat.setChatId(chatId);
+                    sendMessage(chatId, "Спасибо, что оставили контакты. Мы Вам перезвоним.");
+                }
+            } else if (personDogRepository.findByChatId(chatId).isPresent()) {
+                PersonDog personDog = personDogRepository.findByChatId(chatId).get();
+                if (personDog.getPhone() != null) {
+                    sendMessage(chatId, "Ваш номер уже есть в базе");
+                } else {
+                    personDog.setPhone(phone);
+                    personDog.setName(firstName);
+                    personDog.setChatId(chatId);
+                    sendMessage(chatId, "Спасибо, что оставили контакты. Мы Вам перезвоним.");
+                }
             }
-            if (!isPetDog) {
-                personCatRepository.save(new PersonCat(firstName, phone, chatId));
-            } else {
-                personDogRepository.save(new PersonDog(firstName, phone, chatId));
-            }
-            sendMessage(chatId, "Спасибо, что оставили контакты. Мы Вам перезвоним.");
+
         } else {
             sendMessage(chatId, "Некорректный формат сообщения");
         }
-
     }
 
     /**
