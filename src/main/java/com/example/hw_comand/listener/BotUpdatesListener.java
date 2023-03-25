@@ -58,7 +58,7 @@ public class BotUpdatesListener implements UpdatesListener {
     private final ReportDataService reportDataService;
     private final ReportDataRepository reportDataRepository;
     private final PersonDogRepository personDogRepository;
-    private final PersonCatRepository personCatRepository;
+  private final PersonCatRepository personCatRepository;
 
     private static final Pattern REPORT_PATTERN = Pattern.compile("""
             (Рацион:)(\\s)(\\W+)

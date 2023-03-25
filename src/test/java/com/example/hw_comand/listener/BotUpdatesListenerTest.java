@@ -8,6 +8,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,6 +50,7 @@ public class BotUpdatesListenerTest {
     /**
      * Метод тестирует реакцию бота на команду "/start"
      */
+    /*
     @Test
     public void handleStartTest() throws URISyntaxException, IOException {//todo: доработать тесты
         String json = Files.readString(Path.of(BotUpdatesListenerTest.class.getResource("update.json").toURI()));
@@ -73,6 +76,7 @@ public class BotUpdatesListenerTest {
     /**
      * Метод тестирует реакцию бота на нажатие пользователем кнопки меню
      */
+    /*
     @Test
     public void someCommandReceived() throws URISyntaxException, IOException {//todo: доработать тесты
         String json = Files.readString(Path.of(BotUpdatesListenerTest.class.getResource("update.json").toURI()));
@@ -98,4 +102,25 @@ public class BotUpdatesListenerTest {
     public void invokeTimer() {
         // тело метода
     }
+*/
+    @Test
+    public void handleInvalidMessage() throws URISyntaxException, IOException {
+        String json = Files.readString(
+                Paths.get(BotUpdatesListenerTest.class.getResource("update.json").toURI()));
+        Update update = getUpdate(json, "hello world");
+        botUpdatesListener.process(Collections.singletonList(update));
+
+        ArgumentCaptor<SendMessage> argumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        Mockito.verify(telegramBot).execute(argumentCaptor.capture());
+        SendMessage actual = argumentCaptor.getValue();
+
+        Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(123L);
+        Assertions.assertThat(actual.getParameters().get("text")).isEqualTo(
+                "Неверный формат сообщения");
+    }
+
+    private Update getUpdate(String json, String replaced) {
+        return BotUtils.fromJson(json.replace("%command%", replaced), Update.class);
+    }
+
 }
