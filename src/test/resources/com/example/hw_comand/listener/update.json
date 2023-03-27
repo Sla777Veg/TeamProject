@@ -4,9 +4,5 @@
       "id": 123
     },
     "text": "%text%"
-  },
-  "callback_query": {
-    "id": 123,
-    "data": "%data%"
   }
 }
