@@ -1,0 +1,14 @@
+{
+  "message": {
+    "chat": {
+      "id": 123
+    },
+    "text": "%text%",
+    "photo": [
+      {
+        "file_id": 123
+      }
+    ],
+    "date": 123
+  }
+}

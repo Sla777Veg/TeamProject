@@ -174,7 +174,7 @@ public class BotUpdatesListener implements UpdatesListener {
      * @param update
      * @see BotUpdatesListener
      */
-    private void sendReport(Update update) {
+    public void sendReport(Update update) {
         Long chatId = update.message().chat().id();
         Integer reportTime = update.message().date();
         Date reportDate = new Date(TimeUnit.MINUTES.toMillis(reportTime));
@@ -207,7 +207,7 @@ public class BotUpdatesListener implements UpdatesListener {
      * @param update
      * @see BotUpdatesListener
      */
-    private void sendContact(Update update) {
+    public void sendContact(Update update) {
         String firstName = update.message().chat().firstName();
         String text = update.message().text();
         Long chatId = update.message().chat().id();
@@ -281,7 +281,7 @@ public class BotUpdatesListener implements UpdatesListener {
      * @param telegramPhoto
      * @see BotUpdatesListener
      */
-    private void savePhoto(Long chatId, Date reportDate, String description, PhotoSize telegramPhoto) {
+    public void savePhoto(Long chatId, Date reportDate, String description, PhotoSize telegramPhoto) {
         GetFile getFile = new GetFile(telegramPhoto.fileId());
         GetFileResponse getFileResponse = telegramBot.execute(getFile);
         if (getFileResponse.isOk()) {
