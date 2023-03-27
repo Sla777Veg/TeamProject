@@ -64,7 +64,6 @@ public class BotUpdatesListenerTest {
     public void invokeTimer() {
         // тело метода
     }
-
     @Test
     public void testInlineKeyboardListener() throws URISyntaxException, IOException {
 
